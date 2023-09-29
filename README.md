@@ -24,8 +24,10 @@ Web Service to manage a Task list, and also give an analysis based on the task t
 3. Delete a task from the data store
 
 ## Features
-
-
+1. Microsoft.Extensions.Logging (sink to the console)
+2. DataStore https://mockapi.io/ (document object database)
+3. Design Architecture (Repository Pattern)
+4. WebService (Rest API Servicess)
 
 ## Getting Started
 a.) clone the application
