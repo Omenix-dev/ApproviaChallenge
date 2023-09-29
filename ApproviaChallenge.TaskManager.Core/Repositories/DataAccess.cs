@@ -23,9 +23,9 @@ namespace ApproviaChallenge.TaskManager.Core.Repositories
         /// Get all task using httpClientCommandHandler
         /// </summary>
         /// <returns>IEnumerable of tasklist</returns>
-        public async Task<IQueryable<TaskList>> GetAllTasksAsync()
+        public async Task<List<TaskList>> GetAllTasksAsync()
         {
-            return await client.GetRequest<IQueryable<TaskList>>(_baseUrl);
+            return await client.GetRequest<List<TaskList>>(_baseUrl);
         }
 
         /// <summary>

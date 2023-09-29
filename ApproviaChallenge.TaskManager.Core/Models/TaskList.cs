@@ -4,7 +4,7 @@ namespace ApproviaChallenge.TaskManager.Core.Models
 {
     public class TaskList
     {
-        public string TaskID { get; set; } = string.Empty;
+        public string id { get; set; } = string.Empty;
         public string TaskName { get; set; } = string.Empty;
         public string TaskDescription { get; set; } = string.Empty;
         public DateTime StartDate { get; set; }

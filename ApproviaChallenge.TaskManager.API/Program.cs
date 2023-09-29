@@ -1,8 +1,10 @@
 
+using ApproviaChallenge.TaskManager.API.ServiceExtension;
 using ApproviaChallenge.TaskManager.Core.ExternalServices;
 using ApproviaChallenge.TaskManager.Core.Interface;
 using ApproviaChallenge.TaskManager.Core.Repositories;
 using ApproviaChallenge.TaskManager.Core.Services;
+using ApproviaChallenge.TaskManager.Core.Utilities.Profiles;
 using TaskManager.Core.ServiceExtensions;
 
 try
@@ -18,6 +20,8 @@ try
     builder.Services.AddScoped<IClient, ClientFactory>();
     builder.Services.AddScoped<ITaskRepository, DataAccess>();
     builder.Services.AddScoped<ITaskManagerServices, TaskManagerServices>();
+    builder.Services.AddAutoMapper(typeof(MappingProfile));
+    builder.Services.AddSwaggerConfiguration();
 
     builder.Services.AddSwaggerGen();
 
@@ -30,15 +34,7 @@ try
         app.UseSwaggerUI();
     }
 
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-    }
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "TaskManager API V1");
-    });
-
+   
     app.UseHttpsRedirection();
 
     app.UseAuthorization();

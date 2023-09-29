@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ApproviaChallenge.TaskManager.Core.Models;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace ApproviaChallenge.TaskManager.Core.Services
 {
@@ -26,27 +27,34 @@ namespace ApproviaChallenge.TaskManager.Core.Services
         {
             try
             {
+                _logger.LogInformation("initiated the services that is used to create a pull from the docuament datastore");
                 var tasks = await _taskRepository.GetAllTasksAsync();
+                _logger.LogInformation("successfully gotten back the transaction frpom the data base ");
                 var response = _mapper.Map<IEnumerable<TaskListDto>>(tasks);
+                _logger.LogInformation("completed the mapping into the dto for the transafer to the client");
                 if (response == null)
                 {
-                    _logger.LogError($"Error occured getting from database");
+                    _logger.LogInformation("the response is null meaning that the data store is not filled with task");
                     return new List<TaskListDto>();
 
                 }
                 foreach (var task in response)
                 {
+                    _logger.LogInformation("carrying out conversion of the alloted time in integer into date format");
                     task.DueDate = task.StartDate.AddDays(task.AllottedTimeInDays);
                     task.EndDate = task.StartDate.AddDays(task.ElapsedTimeInDays);
+                    _logger.LogInformation("manipulating the data to get the value the over due or days late");
                     task.DaysOverDue = !task.TaskStatus ? (task.ElapsedTimeInDays - task.AllottedTimeInDays) : 0;
                     task.DaysLate = task.TaskStatus ? (task.AllottedTimeInDays - task.ElapsedTimeInDays) : 0;
-                    _logger.LogInformation("getting all task");
+                    _logger.LogInformation("successfully carried out the data mainpulation");
                 }
                 return response;
             }
             catch (Exception ex)
             {
-
+                _logger.LogError("something went wrong contact the admin");
+                _logger.LogError(ex.Message);
+                _logger.LogError(ex.StackTrace);
                 throw ex;
             }
             
@@ -61,10 +69,14 @@ namespace ApproviaChallenge.TaskManager.Core.Services
         {
             try
             {
+                _logger.LogInformation("initiated the services that is used to create a pull from the docuament datastore");
+                _logger.LogInformation("gotten the data for the id " + Id);
                 var tasks = await _taskRepository.GetTaskByIdAsync(Id);
                 var task = _mapper.Map<TaskListDto>(tasks);
+                _logger.LogInformation("carrying out conversion of the alloted time in integer into date format");
                 task.DueDate = task.StartDate.AddDays(task.AllottedTimeInDays);
                 task.EndDate = task.StartDate.AddDays(task.ElapsedTimeInDays);
+                _logger.LogInformation("manipulating the data to get the value the over due or days late");
                 task.DaysOverDue = !task.TaskStatus ? (task.ElapsedTimeInDays - task.AllottedTimeInDays) : 0;
                 task.DaysLate = task.TaskStatus ? (task.AllottedTimeInDays - task.ElapsedTimeInDays) : 0;
                 _logger.LogInformation($"Task with Id {Id} successfully fetched");
@@ -72,7 +84,9 @@ namespace ApproviaChallenge.TaskManager.Core.Services
             }
             catch (Exception ex)
             {
-
+                _logger.LogError("something went wrong contact the admin");
+                _logger.LogError(ex.Message);
+                _logger.LogError(ex.StackTrace);
                 throw ex;
             }
         }
@@ -86,6 +100,7 @@ namespace ApproviaChallenge.TaskManager.Core.Services
         {
             try
             {
+                _logger.LogInformation("about to insert the data for the instance "+ JsonConvert.SerializeObject(data));    
                 var model = _mapper.Map<TaskList>(data);
                 model.StartDate = DateTime.Now;
                 var result = await _taskRepository.AddTaskAsync(model);
@@ -94,6 +109,9 @@ namespace ApproviaChallenge.TaskManager.Core.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError("something went wrong contact the admin");
+                _logger.LogError(ex.Message);
+                _logger.LogError(ex.StackTrace);
                 throw ex;
             }
             
@@ -108,6 +126,7 @@ namespace ApproviaChallenge.TaskManager.Core.Services
         {
             try
             {
+                _logger.LogInformation("about to retrieve the data for the Id " + Id);
                 var result = await _taskRepository.DeleteAsync(Id);
                 _logger.LogInformation("Task successflly deleted");
                 if (!result)
@@ -118,10 +137,11 @@ namespace ApproviaChallenge.TaskManager.Core.Services
             }
             catch (Exception ex)
             {
-
+                _logger.LogError("something went wrong contact the admin");
+                _logger.LogError(ex.Message);
+                _logger.LogError(ex.StackTrace);
                 throw ex;
             }
-            
         }
     }
 }

@@ -6,7 +6,7 @@ namespace ApproviaChallenge.TaskManager.Core.Interface
     {
         Task<TaskList> AddTaskAsync(TaskList data);
         Task<bool> DeleteAsync(string Id);
-        Task<IQueryable<TaskList>> GetAllTasksAsync();
+        Task<List<TaskList>> GetAllTasksAsync();
         Task<TaskList> GetTaskByIdAsync(string Id);
     }
 }
