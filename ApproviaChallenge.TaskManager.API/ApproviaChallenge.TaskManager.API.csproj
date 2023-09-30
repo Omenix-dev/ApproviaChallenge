@@ -17,4 +17,8 @@
     <ProjectReference Include="..\ApproviaChallenge.TaskManager.Core\ApproviaChallenge.TaskManager.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Design Diagram\" />
+  </ItemGroup>
+
 </Project>
